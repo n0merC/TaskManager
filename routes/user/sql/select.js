@@ -1,13 +1,32 @@
 const { mysqlHelper } = require("./../../../common");
 
-(() => {
-    module.exports = async (req, res, next) => {
-        const user = req.user;
-        const pass = req.pass;
+((select) => {
+    select.isAvailable = async (req, res, next) => {
+        const user = req.username;
+        const pass = req.password;
         
+        // console.log(user);
+        
+        const mysql = require('mysql2');
 
-        let request = `select * from login`;
-        const response = mysqlHelper.query(request);
-        console.log(req.body);
+        // create the connection to database
+        const connection = mysql.createConnection({
+            host: 'localhost',
+            user: 'root',
+            database: 'taskmanager'
+        });
+
+        // simple query
+        connection.query(
+            'SELECT * FROM `login` where `username` = "'+user+'"' ,
+            function (err, results, fields) {
+                if(results == null){
+                    return "true"
+                } else
+                    return "false"
+            
+            }
+        );
+        
     }
-})()
+})(module.exports)
