@@ -1,4 +1,4 @@
-// const signup = require("../routes/user/methods/signup");
+
 const insert = require("../routes/user/sql/insert");
 
 ((validationHelper) => {
@@ -6,12 +6,16 @@ const insert = require("../routes/user/sql/insert");
         let x = true;
         const user = loginIn.username;
         const pass = loginIn.password;
-        
+        const passCheck = new RegExp(/^[a-zA-Z0-9]{6,20}$/);
 
+    
         if (pass == null || user == null) {
             x = false;
         }
 
+        if(passCheck.test(pass) == false){
+            x = false;
+        }
         if (x) {
             await insert.put(loginIn);
         }else{
