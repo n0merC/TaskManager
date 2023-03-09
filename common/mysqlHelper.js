@@ -29,25 +29,6 @@ const mysql = require('mysql2/promise');
     } catch (error) {
       throw error;
     }
-    
   };
 
-  // mysqlHelper.queryFormat = (query, values) => {
-  //   try {
-  //     return (dbClient.config.queryFormat = function (query, values) {
-  //       if (!values) return query;
-  //       return query.replace(
-  //         /\:(\w+)/g,
-  //         function (txt, key) {
-  //           if (values.hasOwnProperty(key)) {
-  //             return this.escape(values[key]);
-  //           }
-  //           return txt;
-  //         }.bind(this)
-  //       );
-  //     });
-  //   } catch (error) {
-  //     throw error;
-  //   }
-  // };
 })(module.exports);
