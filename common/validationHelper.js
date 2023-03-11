@@ -2,6 +2,8 @@
 const insert = require("../routes/user/sql/insert");
 const mysql = require('mysql2');
 const mysqlHelper = require('./mysqlHelper');
+const jwt = require('jsonwebtoken');
+const hashHelper = require('./hashHelper');
 ((validationHelper) => {
     validationHelper.valid = async function (loginIn) {
         let x = true;
@@ -29,19 +31,20 @@ const mysqlHelper = require('./mysqlHelper');
         }
     }
 
-    validationHelper.checkAccount = async function(req){
-        
-        let test = 0;
+    validationHelper.checkAccount = async function(req,res){
+        let token = "";
+        let msg = "Login unsuccessful";
         const {username,password} = req.body;
         const result = await mysqlHelper.query(`SELECT * FROM login`);
         // console.log(result.length)
         for(let i = 0;i<result[0].length;i++){
             
-            if((result[0][i].username==username)&&(result[0][i].password==password)){
-                test = 1;
+            if((result[0][i].username==username)&&(hashHelper.comparePassword(result[0][i].password,password))){
+                token = jwt.sign({username},'the-super-strong-secret',{expiresIn: '1h'});
+                msg = "Login successful";
                 break;
             }
         }
-        return test;
+        return res.status(200).send({msg,token});
     }
 })(module.exports)

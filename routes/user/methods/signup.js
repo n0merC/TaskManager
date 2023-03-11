@@ -5,4 +5,4 @@ const { validationHelper } = require("./../../../common");
         let result = await validationHelper.valid(req.body);
         res.status(200).send(result);
     }
-})(module.exports)
+})()
